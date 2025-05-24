@@ -4,7 +4,7 @@ This folder contains references and instructions for accessing and processing th
 
 ## Overview
 
-The datasets include multiple metaproteomic studies used for training, validation, and benchmarking. The raw MS files were converted using **MSConvertGUI (64-bit)**, with configuration parameters detailed below. See [MSConvert Settings](#msconvert-settings) for reproducibility.
+The datasets include multiple metaproteomic studies used for training, validation, and benchmarking. The raw MS files were converted using **MSConvertGUI (64-bit)**, with configuration parameters detailed below.
 
 All datasets comply with FAIR principles through the use of persistent identifiers, open-access repositories, and standard formats for mass spectrometry data.
 
