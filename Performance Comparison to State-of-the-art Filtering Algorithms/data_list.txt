@@ -1,0 +1,39 @@
+ProteomeTools dataset
+* Training Data: file.name at https://xxx
+* Validation Data:
+
+Marine metaproteomes (Marine 1, 2, 3)
+* Protein Database: name.fasta at https://xxx
+* Marine 1 raw MS:
+* Marine 2 raw MS:
+* Marine 3 raw MS:
+* Any commands to covert MS files?
+
+Soil metaproteomes (Soil 1, 2, 3):
+* Protein Database:
+* Soil 1 raw MS:
+* Soil 2 raw MS:
+* Soil 3 raw MS:
+
+Mock community metaproteomes (P1, P2, P3):
+* Protein Database:
+* P1 raw MS:
+* P2 raw MS:
+* P3 raw MS:
+* Any commands to covert MS files?
+
+Human gut metaproteome (HG):
+* Protein Database:
+* Raw MS:
+file1, file2, file3, at http://xxx
+* Any commands to covert MS files?
+
+Human gut metaproteome (timsTOF dataset) (HGT):
+* Protein Database:
+* Raw MS:
+* Any commands to covert MS files?
+
+Synthetic microbial mixture
+* Protein Database:
+* Raw MS:
+* Any commands to covert MS files?
