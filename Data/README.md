@@ -142,6 +142,6 @@ Raw MS data were converted using **MSConvertGUI (v64-bit)** with the following c
 
 MSConvert Configuration Screenshot:
 
-![MSConvert Settings](../msconvert.png)
+![MSConvert Settings](./msconvert.png)
 
 ---
