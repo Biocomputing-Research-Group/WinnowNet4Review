@@ -15,15 +15,19 @@ This directory contains the commands and configuration files used to run protein
 Place `comet.params` in the same directory as `comet.exe`. Update the `database_name` parameter in the file for each dataset as shown below.
 
 **Common command:**
+```
 export OMP_NUM_THREADS=16
 ./comet.exe workDir/*.ms2
+```
 
 **Configuration file:** `comet.params`
 
+```
 database_name = ./Marine_shuffled.fasta # for Marine Metaproteomes
 database_name = ./Soil_shuffled.fasta # for Soil Metaproteomes
 database_name = ./Mock_Comm_RefDB_V3_shuffled.fasta # for Mock Community Metaproteomes
 database_name = ./stool_nrnew_shuffled.fasta # for Human Gut Metaproteome
+```
 
 ---
 
@@ -32,15 +36,18 @@ database_name = ./stool_nrnew_shuffled.fasta # for Human Gut Metaproteome
 Place `myrimatch.cfg` in your working directory. Update the `ProteinDatabase` field for each dataset.
 
 **Common command:**
+```
 export LC_ALL=C
 ./myrimatch -cfg myrimatch.cfg -workdir workDir/ -cpus 16 workDir/*.ms2
+```
 
 **Configuration file:** `myrimatch.cfg`
-
+```
 ProteinDatabase = ./Marine_shuffled.fasta # Marine
 ProteinDatabase = ./Soil_shuffled.fasta # Soil
 ProteinDatabase = ./Mock_Comm_RefDB_V3_shuffled.fasta # Mock Community
 ProteinDatabase = ./stool_nrnew_shuffled.fasta # Human Gut
+```
 
 ---
 
@@ -49,6 +56,7 @@ ProteinDatabase = ./stool_nrnew_shuffled.fasta # Human Gut
 Place `MSGFPlus_Mods1.txt` and the appropriate FASTA database in the same `workDir`.
 
 **Common command:**
+```
 cd workDir
 for name in *.ms2; do
 java -Xmx250000M -jar https://github.com/MSGFPlus/msgfplus/releases/download/v2019.04.18/MSGFPlus.jar
@@ -60,6 +68,7 @@ java -Xmx250000M -jar https://github.com/MSGFPlus/msgfplus/releases/download/v20
 -decoy Rev -mod MSGFPlus_Mods1.txt
 -o "${name%.}.mzid"
 done
+```
 
 **Configuration file:** `MSGFPlus_Mods1.txt`  
 Replace `DATABASE.fasta` with the appropriate file:  
