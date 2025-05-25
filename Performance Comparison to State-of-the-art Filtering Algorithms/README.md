@@ -6,7 +6,7 @@ This directory contains the commands and configuration files used to run protein
 
 - [Comet (version 2018012)](https://sourceforge.net/projects/comet-ms/files/comet_2018012.zip)  
 - [Myrimatch](https://figshare.com/articles/dataset/myrimatch/29144549?file=54806417)  
-- [MS-GF+ (version 2019.04.18)](https://github.com/MSGFPlus/msgfplus)  
+- [MS-GF+ (version 2019.04.18)](https://github.com/MSGFPlus/msgfplus/releases/download/v2019.04.18/MSGFPlus.jar)  
 
 ---
 
@@ -50,8 +50,8 @@ Place `MSGFPlus_Mods1.txt` and the appropriate FASTA database in the same `workD
 
 **Common command:**
 cd workDir
-for name in .ms2; do
-java -Xmx250000M -jar PATH_TO_MSGFPlus/MSGFPlus.jar
+for name in *.ms2; do
+java -Xmx250000M -jar https://github.com/MSGFPlus/msgfplus/releases/download/v2019.04.18/MSGFPlus.jar
 -s "${name}"
 -d "./DATABASE.fasta"
 -inst 1 -t 0.09Da -ti -1,3 -ntt 2 -e 1
