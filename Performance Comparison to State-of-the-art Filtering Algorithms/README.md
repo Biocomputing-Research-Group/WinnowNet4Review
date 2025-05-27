@@ -6,7 +6,7 @@ This directory contains the commands and configuration files used to run protein
 
 - [Comet (version 2018012)](https://sourceforge.net/projects/comet-ms/files/comet_2018012.zip)  
 - [Myrimatch](https://figshare.com/articles/dataset/myrimatch/29144549?file=54806417)  
-- [MS-GF+ (version 2019.04.18)](https://github.com/MSGFPlus/msgfplus/releases/download/v2019.04.18/MSGFPlus.jar)  
+- [MS-GF+ (version 2019.04.18)](https://github.com/MSGFPlus/msgfplus)  
 
 ---
 
