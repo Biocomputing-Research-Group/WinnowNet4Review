@@ -59,7 +59,7 @@ Place `MSGFPlus_Mods1.txt` and the appropriate FASTA database in the same `workD
 ```
 cd workDir
 for name in *.ms2; do
-java -Xmx250000M -jar https://github.com/MSGFPlus/msgfplus/releases/download/v2019.04.18/MSGFPlus.jar
+java -Xmx250000M -jar MSGFPlus.jar
 -s "${name}"
 -d "./DATABASE.fasta"
 -inst 1 -t 0.09Da -ti -1,3 -ntt 2 -e 1
