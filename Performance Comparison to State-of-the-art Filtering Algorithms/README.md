@@ -185,7 +185,7 @@ python sipros_peptides_assembling.py
 
 ---
 
-## 2.2. MS2Rescore
+### 2.2. MS2Rescore
 
 [MS2Rescore documentation and installation](https://ms2rescore.readthedocs.io/en/stable/installation/)
 
@@ -193,9 +193,9 @@ MS2Rescore is a rescoring tool designed to improve peptide-spectrum match classi
 
 ---
 
-### Input Conversion to MS2Rescore-Compatible `.tsv` Format
+#### Input Conversion to MS2Rescore-Compatible `.tsv` Format
 
-#### Comet
+##### Comet
 
 - **Script:** `comet2tsv.py`
 - **Command:**
@@ -203,7 +203,7 @@ MS2Rescore is a rescoring tool designed to improve peptide-spectrum match classi
   python comet2tsv.py -i filename.pep.xml -o filename.tsv
   ```
 
-#### Myrimatch
+##### Myrimatch
 
 - **Script:** `myrimatch2tsv.py`
 - **Command:**
@@ -211,7 +211,7 @@ MS2Rescore is a rescoring tool designed to improve peptide-spectrum match classi
   python myrimatch2tsv.py -i filename.pep.xml -o filename.tsv
   ```
 
-#### MS-GF+
+##### MS-GF+
 
 - **Script:** `msgf2tsv.py`
 - **Command:**
@@ -221,7 +221,7 @@ MS2Rescore is a rescoring tool designed to improve peptide-spectrum match classi
 
 ---
 
-### Running MS2Rescore
+#### Running MS2Rescore
 
 Once `.tsv` files are prepared and you have a `config.json` file ready:
 
@@ -235,7 +235,7 @@ ms2rescore -c config.json -p filename.tsv -n 20
 
 ---
 
-### FDR Filtering (PSM/Peptide Level at 1%)
+#### FDR Filtering (PSM/Peptide Level at 1%)
 
 You can apply 1% FDR filtering using:
 
@@ -255,7 +255,7 @@ This generates:
 
 ---
 
-### Protein-Level Assembly and FDR Control
+#### Protein-Level Assembly and FDR Control
 
 Use the following command to assemble peptides and assess protein-level FDR:
 
