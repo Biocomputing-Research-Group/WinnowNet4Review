@@ -18,7 +18,7 @@ We used peptide-spectrum matches (PSMs) generated from three protein database se
 - [1. Protein Database Searching](#1-protein-database-searching)
 - [2. PSM Filtering and Protein Inference with FDR Control](#2-psm-filtering-and-protein-inference-with-fdr-control)
   - [Percolator](#percolator)
-  - [Q-ranker](#2-2-q-ranker)
+  - [Q-ranker](#22-q-ranker)
   - [PeptideProphet](#peptideprophet)
   - [iProphet](#iprophet)
   - [MS2Rescore](#ms2rescore)
