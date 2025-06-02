@@ -17,14 +17,14 @@ We used peptide-spectrum matches (PSMs) generated from three protein database se
 
 - [1. Protein Database Searching](#1-protein-database-searching)
 - [2. PSM Filtering and Protein Inference with FDR Control](#2-psm-filtering-and-protein-inference-with-fdr-control)
-  - [Percolator](#percolator)
+  - [Percolator](#21-percolator)
   - [Q-ranker](#22-q-ranker)
-  - [PeptideProphet](#peptideprophet)
-  - [iProphet](#iprophet)
-  - [MS2Rescore](#ms2rescore)
-  - [DeepFilter](#deepfilter)
-  - [CNN-based WinnowNet](#cnn-based-winnownet)
-  - [Self-attention-based WinnowNet](#self-attention-based-winnownet)
+  - [PeptideProphet](#23-peptideprophet)
+  - [iProphet](#24-iprophet)
+  - [MS2Rescore](#25-ms2rescore)
+  - [DeepFilter](#26-deepfilter)
+  - [CNN-based WinnowNet](#27-cnn-based-winnownet)
+  - [Self-attention-based WinnowNet](#28-self-attention-based-winnownet)
 
 ---
 
@@ -127,7 +127,7 @@ In this section, we detail how to post-process PSMs and infer proteins using dif
 
 ---
 
-### Percolator
+### 2.1. Percolator
 
 **Download URL:**  
 https://github.com/percolator/percolator (Version 3.2)
@@ -221,7 +221,7 @@ python sipros_peptides_assembling.py
 
 ---
 
-### PeptideProphet
+### 2.3. PeptideProphet
 
 **Download URL:**  
 http://tools.proteomecenter.org/wiki/index.php?title=TPP_5.2.0:_Installing_on_Ubuntu_18.04_LTS
@@ -245,7 +245,7 @@ PeptideProphetParser combined_filename.pep.xml ZERO DECOY=Rev_ DECOYPROBS
 
 ---
 
-### iProphet
+### 2.4. iProphet
 
 **Download URL:**  
 http://tools.proteomecenter.org/wiki/index.php?title=TPP_5.2.0:_Installing_on_Ubuntu_18.04_LTS
@@ -263,7 +263,7 @@ InterProphetParser THREADS=8 DECOY=Rev_ NONSI NONSM NONSP NONRS combined_filenam
 
 ---
 
-### MS2Rescore
+### 2.5. MS2Rescore
 
 **Documentation & Installation:**  
 https://ms2rescore.readthedocs.io/en/stable/installation/
@@ -312,7 +312,10 @@ python sipros_peptides_assembling.py
 
 ---
 
-### DeepFilter
+### 2.6. DeepFilter
+
+**Documentation & Installation:**  
+https://github.com/Biocomputing-Research-Group/DeepFilter
 
 DeepFilter applies a deep learning model to rescore PSMs.
 
@@ -351,7 +354,7 @@ python sipros_peptides_assembling.py
 
 ---
 
-### CNN-based WinnowNet
+### 2.7. CNN-based WinnowNet
 
 **Download URL:**  
 https://github.com/Biocomputing-Research-Group/WinnowNet/tree/main
@@ -399,7 +402,7 @@ python sipros_peptides_assembling.py
 
 ---
 
-### Self-attention-based WinnowNet
+### 2.8. Self-attention-based WinnowNet
 
 **Download URL:**  
 https://github.com/Biocomputing-Research-Group/WinnowNet/tree/main
