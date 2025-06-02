@@ -9,7 +9,7 @@ This directory provides all necessary commands, configuration files, and convers
 - **MS2Rescore**
 - **DeepFilter**
 
-We used peptide-spectrum matches (PSMs) generated from three protein database search engines: **Comet**, **Myrimatch**, and **MS-GF+**, applied across multiple metaproteomics datasets. More details about these datasets are in [Data/](../Data/)
+We used peptide-spectrum matches (PSMs) generated from three protein database search engines: **Comet**, **Myrimatch**, and **MS-GF+**, applied across multiple metaproteomics datasets. More details about these datasets are in [Data/](./Data/)
 
 ---
 
@@ -18,10 +18,10 @@ We used peptide-spectrum matches (PSMs) generated from three protein database se
 - [1. Protein Database Searching](#1-protein-database-searching)
 - [2. PSM Filtering and Protein Inference with FDR Control](#2-psm-filtering-and-protein-inference-with-fdr-control)
   - [Percolator](#percolator)
-  - [MS2Rescore](#ms2rescore)
-  - [Q-ranker](#q-ranker)
+  - [Q-ranker](#2-2-q-ranker)
   - [PeptideProphet](#peptideprophet)
   - [iProphet](#iprophet)
+  - [MS2Rescore](#ms2rescore)
   - [DeepFilter](#deepfilter)
   - [CNN-based WinnowNet](#cnn-based-winnownet)
   - [Self-attention-based WinnowNet](#self-attention-based-winnownet)
@@ -45,7 +45,7 @@ We used peptide-spectrum matches (PSMs) generated from three protein database se
 
 ### Running Comet
 
-1. Place `comet.params` in the same directory as `comet.exe`.
+1. Place `comet.params` in the same directory as `comet.exe`.  
 2. Update the `database_name` field in `comet.params` to point to the appropriate FASTA file.
 
 **Command:**
@@ -66,7 +66,7 @@ database_name = ./stool_nrnew_shuffled.fasta         # Human Gut
 
 ### Running Myrimatch
 
-1. Place `myrimatch.cfg` in your working directory.
+1. Place `myrimatch.cfg` in your working directory.  
 2. Modify the `ProteinDatabase` field as needed.
 
 **Command:**
@@ -87,7 +87,7 @@ ProteinDatabase = ./stool_nrnew_shuffled.fasta         # Human Gut
 
 ### Running MS-GF+
 
-1. Place `MSGFPlus_Mods1.txt` and the corresponding `.fasta` database in the `workDir`.
+1. Place `MSGFPlus_Mods1.txt` and the corresponding `.fasta` database in the `workDir`.  
 2. Ensure Java 8 or newer is installed.
 
 **Command:**
@@ -107,92 +107,75 @@ done
 
 **Replace `DATABASE.fasta` with:**
 ```
-- `Marine_shuffled.fasta`
-- `Soil_shuffled.fasta`
-- `Mock_Comm_RefDB_V3_shuffled.fasta`
-- `stool_nrnew_shuffled.fasta`
-
+- Marine_shuffled.fasta
+- Soil_shuffled.fasta
+- Mock_Comm_RefDB_V3_shuffled.fasta
+- stool_nrnew_shuffled.fasta
 ```
 
 ---
 
 ## 2. PSM Filtering and Protein Inference with FDR Control
 
-### 2.1. Percolator
+In this section, we detail how to post-process PSMs and infer proteins using different filtering algorithms. Each subsection explains:
 
-Percolator is a machine learning-based tool for post-processing PSMs. We benchmarked version 3.2.
-
-**Download URL:**  
-https://github.com/percolator/percolator
+- **Download link** for the tool
+- **Input conversion** from search engine output to the tool-specific format
+- **Command** to run the tool
+- **FDR filtering** at PSM/peptide level (typically 1% FDR)
+- **Protein inference** step to assemble peptides into proteins and control protein-level FDR
 
 ---
 
+### Percolator
+
+**Download URL:**  
+https://github.com/percolator/percolator (Version 3.2)
+
 #### Input Conversion to `.pin` Format
 
-##### Comet
-
-- **Script Needed:** None  
-- **Note:** Comet directly outputs `.pin` files during execution.
-
-##### Myrimatch
-
-- **Script:** `myrimatch2pin.py`
-- **Command:**
-  ```
+- **Comet**: Produces `.pin` files natively; no conversion script needed.  
+- **Myrimatch**:  
+  ```bash
   python myrimatch2pin.py -i filename.pepXML -o filename.pin
-  ```
-  - `-i`: Myrimatch output (`.pepXML`)  
-  - `-o`: Output `.pin` for Percolator
-
-##### MS-GF+
-
-- **Script:** `msgf2pin.py`
-- **Command:**
-  ```
+  ```  
+  (`-i`: input Myrimatch `.pepXML`; `-o`: output `.pin`)  
+- **MS-GF+**:  
+  ```bash
   python msgf2pin.py -i filename.mzid -o filename.pin
-  ```
-  - `-i`: MS-GF+ output (`.mzid`)  
-  - `-o`: Output `.pin` for Percolator
+  ```  
+  (`-i`: input MS-GF+ `.mzid`; `-o`: output `.pin`)
 
 #### Running Percolator
 
-Run Percolator on a `.pin` file:
-
-```
+```bash
 percolator filename.pin -m filename.target.tsv -M filename.decoy.tsv
 ```
-
-- `-m`: Output file for target PSMs  
-- `-M`: Output file for decoy PSMs
+- `-m`: output target PSMs TSV  
+- `-M`: output decoy PSMs TSV
 
 #### FDR Filtering (PSM/Peptide Level)
 
-Apply 1% FDR control at the PSM and peptide level:
-
-```
+Apply 1% FDR:
+```bash
 python filtering_benchmark_shuffle.py -t filename.target.tsv -d filename.decoy.tsv -m percolator -o filename.filtered -f 0.01
 ```
+- `-t`: Percolator target TSV  
+- `-d`: Percolator decoy TSV  
+- `-m`: method name `percolator`  
+- `-o`: output prefix  
+- `-f`: FDR threshold (e.g., `0.01`)
 
-- `-t`: Target TSV file from Percolator  
-- `-d`: Decoy TSV file from Percolator  
-- `-m`: Method (set to `percolator`)  
-- `-o`: Output prefix  
-- `-f`: FDR threshold (e.g., `0.01` for 1%)
-
-**Output files:**
-
+**Output files:**  
 - `filename.filtered.psm.txt`  
 - `filename.filtered.pep.txt`
 
 #### Protein-Level Assembly and FDR Control
 
-Assemble peptides into proteins and assess FDR:
-
-```
+```bash
 python sipros_peptides_assembling.py
 ```
-
-> **Note:** To control FDR at the protein level to 1%, iteratively reduce the `-f` parameter in the filtering step above and re-run until the desired protein-level FDR is achieved.
+> Note: To achieve 1% protein-level FDR, adjust the `-f` parameter in the previous filtering step and rerun until the desired protein FDR is met.
 
 ---
 
@@ -203,290 +186,273 @@ https://figshare.com/articles/dataset/crux/29206184?file=55020527
 
 #### Input Conversion to Q-ranker-Compatible Format
 
-##### Comet
-- **Script:** `comet2txt.py`
-- **Command:**
-  ```
+- **Comet**:  
+  ```bash
   python comet2txt.py -i filename.pep.xml -o filename.txt
-  ```
-
-##### Myrimatch
-- **Script:** `myriamtch2txt.py`
-- **Command:**
-  ```
+  ```  
+- **Myrimatch**:  
+  ```bash
   python myriamtch2txt.py -i filename.pepXML -o filename.txt
-  ```
-
-##### MS-GF+
-- **Script:** `msgf2txt.py`
-- **Command:**
-  ```
+  ```  
+- **MS-GF+**:  
+  ```bash
   python msgf2txt.py -i filename.mzid -o filename.txt
   ```
 
 #### Running Q-ranker
 
-```
+```bash
 ./crux q-ranker --decoy-prefix Rev_ --output-dir output_directory filename.ms2 filename.txt
 ```
 
 #### FDR Filtering (PSM/Peptide Level)
-```
+
+```bash
 python filtering_benchmark_shuffle.py -t output_directory/q-ranker.target.psms.txt -d filename.decoy.tsv -m qranker -o filename.filtered -f 0.01
 ```
+- Generates: `filename.filtered.psm.txt`, `filename.filtered.pep.txt`
 
 #### Protein-Level Assembly
-```
+
+```bash
 python sipros_peptides_assembling.py
 ```
+> Note: Adjust `-f` threshold iteratively to meet 1% protein FDR.
 
 ---
 
-### 2.3. PeptideProphet
+### PeptideProphet
 
 **Download URL:**  
 http://tools.proteomecenter.org/wiki/index.php?title=TPP_5.2.0:_Installing_on_Ubuntu_18.04_LTS
 
 #### Input Format
 
-- **Comet & Myrimatch:** `.pep.xml` files directly compatible  
-- **MS-GF+:** Use `idconvert` from TPP:
-  ```
+- **Comet** & **Myrimatch**: Generate `.pep.xml` files directly.  
+- **MS-GF+**: Convert using TPP’s `idconvert`:
+  ```bash
   idconvert filename.mzid --pepXML
   ```
 
 #### Running PeptideProphet
 
-```
+```bash
 InteractParser combined_filename.pep.xml *.pep.xml -Dprotein.fasta -Tfasta -Estricttrypsin -a /ms2_file_directory/
 PeptideProphetParser combined_filename.pep.xml ZERO DECOY=Rev_ DECOYPROBS
 ```
 
+> This produces a combined `.pep.xml` with probability scores for each PSM.
+
 ---
 
-### 2.4. iProphet
+### iProphet
 
 **Download URL:**  
 http://tools.proteomecenter.org/wiki/index.php?title=TPP_5.2.0:_Installing_on_Ubuntu_18.04_LTS
 
 #### Input
 
-Uses the `.pep.xml` output from PeptideProphet.
+Uses the `.pep.xml` output file generated by PeptideProphet.
 
 #### Running iProphet
 
-```
+```bash
 InterProphetParser THREADS=8 DECOY=Rev_ NONSI NONSM NONSP NONRS combined_filename.pep.xml iProphet_output.pep.xml
 ```
+> iProphet refines probability estimates by integrating multiple search engine results.
 
 ---
 
-### 2.5. MS2Rescore
+### MS2Rescore
 
-[MS2Rescore documentation and installation](https://ms2rescore.readthedocs.io/en/stable/installation/)
+**Documentation & Installation:**  
+https://ms2rescore.readthedocs.io/en/stable/installation/
 
-MS2Rescore is a rescoring tool designed to improve peptide-spectrum match classification using additional features. Below are the instructions for converting search engine outputs, running MS2Rescore, and controlling FDR at multiple levels.
+MS2Rescore enhances PSM confidence using additional features like retention time and MS2 spectral intensity.
 
-#### Input Conversion to MS2Rescore-Compatible `.tsv` Format
+#### Input Conversion to `.tsv` Format
 
-##### Comet
-
-- **Script:** `comet2tsv.py`
-- **Command:**
-  ```
+- **Comet**:  
+  ```bash
   python comet2tsv.py -i filename.pep.xml -o filename.tsv
-  ```
-
-##### Myrimatch
-
-- **Script:** `myrimatch2tsv.py`
-- **Command:**
-  ```
+  ```  
+- **Myrimatch**:  
+  ```bash
   python myrimatch2tsv.py -i filename.pep.xml -o filename.tsv
-  ```
-
-##### MS-GF+
-
-- **Script:** `msgf2tsv.py`
-- **Command:**
-  ```
+  ```  
+- **MS-GF+**:  
+  ```bash
   python msgf2tsv.py -i filename.pep.xml -o filename.tsv
   ```
 
----
-
 #### Running MS2Rescore
 
-Once `.tsv` files are prepared and you have a `config.json` file ready:
-
-```
+```bash
 ms2rescore -c config.json -p filename.tsv -n 20
 ```
+- `-c`: path to `config.json` which specifies model parameters  
+- `-p`: input PSM `.tsv`  
+- `-n`: number of CPU cores
 
-- `-c`: Configuration JSON file
-- `-p`: Input `.tsv` file generated by conversion scripts
-- `-n`: Number of CPU cores to use
+#### FDR Filtering (PSM/Peptide Level)
 
-#### FDR Filtering (PSM/Peptide Level at 1%)
+Use output from MS2Rescore (e.g., Mokapot PSMs):
 
-You can apply 1% FDR filtering using:
-
-```
-python filtering_benchmark_shuffle.py -t output_directory/q-ranker.target.psms.txt -d filename.decoy.tsv -m ms2rescore -o filename.filtered -f 0.01
-```
-
-**Alternative command (e.g., when using MokaPot outputs):**
-
-```
+```bash
 python filtering_benchmark_shuffle.py -t filename.ms2rescore.mokapot.psms.txt -d filename.ms2rescore.mokapot.decoy.psms.txt -m ms2rescore -o filename.filtered -f 0.01
 ```
-
-This generates:
-- `filename.filtered.psm.txt` (PSM-level results)
-- `filename.filtered.pep.txt` (Peptide-level results)
+- Produces: `filename.filtered.psm.txt`, `filename.filtered.pep.txt`
 
 #### Protein-Level Assembly and FDR Control
 
-Use the following command to assemble peptides and assess protein-level FDR:
-
-```
+```bash
 python sipros_peptides_assembling.py
 ```
-
-> **Note:** To control protein-level FDR to 1%, iteratively reduce the `-f` value in the filtering command and re-run until the resulting protein FDR reaches 1%.
+> Adjust `-f` to reach 1% protein FDR.
 
 ---
 
-### 2.6. DeepFilter
+### DeepFilter
+
+DeepFilter applies a deep learning model to rescore PSMs.
 
 #### Input Conversion to `.pin` Format
 
-##### Comet
-- Native `.pin` output compatible with DeepFilter.
-
-##### Myrimatch
-- **Script:** `myrimatch2df.py`
-- **Command:**
-  ```
+- **Comet**: Native `.pin` output; no conversion needed.  
+- **Myrimatch**:  
+  ```bash
   python myrimatch2df.py -i filename.pepXML -o filename.pin
-  ```
-
-##### MS-GF+
-- **Script:** `msgf2df.py`
-- **Command:**
-  ```
+  ```  
+- **MS-GF+**:  
+  ```bash
   python msgf2df.py -i filename.pepXML -o filename.pin
   ```
 
 #### Running DeepFilter
 
-```
+```bash
 ./inference.sh -in filename.ms2 -s filename.pin -m benchmark.pt -o rescore.out.txt
 ```
 
-#### FDR Filtering
+#### FDR Filtering (PSM/Peptide Level)
 
+```bash
+python filtering.py rescore.out.txt filename.pin filename.psm.txt filename.pep.txt
 ```
-python filtering.py rescore.txt filename.pin filename.psm.txt filename.pep.txt
-```
+- `filename.psm.txt`: filtered PSM results  
+- `filename.pep.txt`: filtered peptide results
 
-#### Protein-Level Assembly
+#### Protein-Level Assembly and FDR Control
 
-```
+```bash
 python sipros_peptides_assembling.py
 ```
+> Iterate `-f` to ensure 1% protein FDR.
 
 ---
 
-### 2.7. CNN-based WinnowNet
+### CNN-based WinnowNet
 
 **Download URL:**  
 https://github.com/Biocomputing-Research-Group/WinnowNet/tree/main
 
-#### Input Conversion
+A CNN-based deep learning approach for PSM rescoring.
 
-##### Comet
-```
-python comet2win.py -i filename.pep.xml -o filename.tsv
-```
+#### Input Conversion to `.tsv` Format
 
-##### Myrimatch
-```
-python myrimatch2win.py -i filename.pepXML -o filename.tsv
-```
-
-##### MS-GF+
-```
-python msgf2win.py -i filename.mzid -o filename.tsv
-```
+- **Comet**:  
+  ```bash
+  python comet2win.py -i filename.pep.xml -o filename.tsv
+  ```  
+- **Myrimatch**:  
+  ```bash
+  python myrimatch2win.py -i filename.pepXML -o filename.tsv
+  ```  
+- **MS-GF+**:  
+  ```bash
+  python msgf2win.py -i filename.mzid -o filename.tsv
+  ```
 
 #### Running CNN-based WinnowNet
 
-```
-python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f cnn
-python Prediction_CNN.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
-```
+1. Generate spectral features:  
+   ```bash
+   python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f cnn
+   ```
+2. Predict PSM scores:  
+   ```bash
+   python Prediction_CNN.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+   ```
 
-#### FDR Filtering
+#### FDR Filtering (PSM/Peptide Level)
 
-```
+```bash
 python filtering_shuffle.py -i rescore.out.txt -p filename.tsv -o filtered
 ```
 
-#### Protein-Level Assembly
+#### Protein-Level Assembly and FDR Control
 
-```
+```bash
 python sipros_peptides_assembling.py
 ```
+> Adjust `-f` for 1% protein FDR.
 
 ---
 
-### 2.8. Self-attention-based WinnowNet
+### Self-attention-based WinnowNet
 
 **Download URL:**  
 https://github.com/Biocomputing-Research-Group/WinnowNet/tree/main
 
-#### Input Conversion
+A transformer-inspired self-attention method for PSM rescoring.
 
-##### Comet
-```
-python comet2win.py -i filename.pep.xml -o filename.tsv
-```
+#### Input Conversion to `.tsv` Format
 
-##### Myrimatch
-```
-python myrimatch2win.py -i filename.pepXML -o filename.tsv
-```
-
-##### MS-GF+
-```
-python msgf2win.py -i filename.mzid -o filename.tsv
-```
+- **Comet**:  
+  ```bash
+  python comet2win.py -i filename.pep.xml -o filename.tsv
+  ```  
+- **Myrimatch**:  
+  ```bash
+  python myrimatch2win.py -i filename.pepXML -o filename.tsv
+  ```  
+- **MS-GF+**:  
+  ```bash
+  python msgf2win.py -i filename.mzid -o filename.tsv
+  ```
 
 #### Running Self-attention-based WinnowNet
 
-```
-python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f att
-python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
-```
+1. Generate spectral features:  
+   ```bash
+   python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f att
+   ```
+2. Predict PSM scores:  
+   ```bash
+   python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+   ```
 
-#### FDR Filtering
+#### FDR Filtering (PSM/Peptide Level)
 
-```
+```bash
 python filtering_shuffle.py -i rescore.out.txt -p filename.tsv -o filtered
 ```
 
-#### Protein-Level Assembly
+#### Protein-Level Assembly and FDR Control
 
-```
+```bash
 python sipros_peptides_assembling.py
 ```
+> Adjust `-f` until protein FDR is ≤1%.
 
+---
 
 ## 3. General Notes
 
-- All configuration files (`comet.params`, `myrimatch.cfg`, `MSGFPlus_Mods1.txt`) and FASTA databases should be placed in the `experiments/` directory.
-- Use absolute paths where necessary for reproducibility.
-- All commands were executed using 16 CPU threads unless otherwise specified.
-- Java (version 8 or later) is required for MS-GF+.
-- Make sure the `.fasta` files used are the **shuffled decoy versions** referenced in the paper.
+- All configuration files (`comet.params`, `myrimatch.cfg`, `MSGFPlus_Mods1.txt`, etc.) and FASTA databases should be placed in the `experiments/` directory.  
+- Use absolute paths for reproducibility.  
+- Most commands were run using 16 CPU threads.  
+- Java (version 8 or newer) is required for MS-GF+.  
+- Ensure FASTA databases are the **shuffled decoy versions** listed in the paper.
+
+---
