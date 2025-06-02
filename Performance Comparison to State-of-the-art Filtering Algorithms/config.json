@@ -1,0 +1,16 @@
+{
+    "$schema": "./config_schema.json",
+    "ms2rescore":{
+	    "psm_file_type": "infer",
+	    "spectrum_path": "path/to/spectrum",
+	    "id_decoy_pattern": "Rev_",
+	    "spectrum_id_pattern": ".*scan=(\\d+)",
+	    "feature_generators": {
+		    "basic": {},
+		    "ms2pip": {
+			    "model": "HCD",
+			    "ms2_tolerance": 0.01
+		    }
+	    }
+    }
+}
