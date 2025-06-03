@@ -1,4 +1,4 @@
-# Metaproteomics Protein Identification Pipeline
+# Performance Evaluation of WinnowNet-Integrated Protein Identification Pipelines
 
 This folder contains the computational pipeline used for protein identification in our MS-based metaproteomics analysis, as described in our publication. The pipeline includes multiple tools (Sipros Ensemble, FragPipe, Peaks, and AlphaPept) and is organized to ensure reproducibility and compliance with the FAIR principles.
 
