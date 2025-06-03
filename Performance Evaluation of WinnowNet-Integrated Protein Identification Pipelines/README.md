@@ -49,7 +49,7 @@ Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
 
 #### Filtering and Protein Assembly
 - Use GUI settings shown in:
-  - Screenshot: `FP_filtering_protein_assembly.png`
+  - Screenshot: `FP_filtering_protein_assembly.png` [FP_filtering_protein_assembly.png](./FP_filtering_protein_assembly.png)
 
 ---
 
