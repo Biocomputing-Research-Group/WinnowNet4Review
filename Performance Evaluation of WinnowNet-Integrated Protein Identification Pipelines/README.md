@@ -36,7 +36,7 @@ Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
 ./runSiprosFiltering.sh -in work_Dir -c work_Dir/SiprosConfig.cfg -o work_Dir
 ```
 
-- *Note*: Adjust `FDR_Threshold` in `SiprosConfig.cfg` to control filtering stringency.
+- *Note*: Adjust `FDR_Threshold` in [SiprosConfig.cfg](./SiprosConfig.cfg) to control filtering stringency.
 
 ---
 
@@ -44,12 +44,12 @@ Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
 
 #### Database Searching
 - Load parameters using GUI:
-  - Screenshot: `FP_DB_search.png`
-  - Click "Load" to use `fragger.params`
+  - Screenshot: [FP_DB_search.png](./FP_DB_search.png)
+  - Click "Load" to use [fragger.params](./fragger.params)
 
 #### Filtering and Protein Assembly
 - Use GUI settings shown in:
-  - Screenshot: `FP_filtering_protein_assembly.png` `[FP_filtering_protein_assembly.png]`(./FP_filtering_protein_assembly.png)
+  - Screenshot: [FP_filtering_protein_assembly.png](./FP_filtering_protein_assembly.png)
 
 ---
 
@@ -57,7 +57,7 @@ Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
 
 Peaks provides a one-click workflow.
 
-- GUI screenshot: `Peaks.png`
+- GUI screenshot: [Peaks.png](./Peaks.png)
 
 **Parameter adjustments:**
 - Precursor mass tolerance: 0.09 Da
@@ -75,7 +75,7 @@ One-click command for the full workflow:
 alphapept workflow config.yaml
 ```
 
-- Configuration file: `config.yaml` (user must provide or customize)
+- Configuration file: [config.yaml](./config.yaml) (user must provide or customize)
 
 ---
 
