@@ -22,7 +22,7 @@ WinnowNet-Reproduction/
 │
 ├── Performance Evaluation of WinnowNet-Integrated Protein Identification Pipelines/
 │   └── Instructions for integrating WinnowNet with Sipros-Ensemble, FragPipe, Peaks, and AlphaPept pipelines.
-│       Includes evaluation scripts and performance metrics (e.g., FMR and identification gain).
+│       Includes evaluation scripts and performance metrics (e.g., FDR control and identification gain).
 │
 └── README.md
 ```
@@ -45,7 +45,7 @@ Each subdirectory contains:
 
 If you find this repository helpful, please cite our paper:
 
-> ["Citation coming soon."]
+> Citation coming soon.
 
 ## License
 
@@ -53,4 +53,4 @@ If you find this repository helpful, please cite our paper:
 
 ## Contact
 
-For any questions or issues, please [Submit here](https://github.com/Biocomputing-Research-Group/WinnowNet4Review/issues)
+For any questions or issues, please [submit here](https://github.com/Biocomputing-Research-Group/WinnowNet4Review/issues)
