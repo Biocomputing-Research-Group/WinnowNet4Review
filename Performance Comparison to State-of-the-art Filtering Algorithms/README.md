@@ -72,7 +72,7 @@ database_name = ./stool_nrnew_shuffled.fasta         # Human Gut
 **Command:**
 ```
 export LC_ALL=C
-./myrimatch -cfg myrimatch.cfg -workdir workDir/ -cpus 16 workDir/*.ms2
+./myrimatch -cfg /path/to/myrimatch.cfg -workdir /path/to/workDir/ -cpus 16 /path/to/workDir/*.ms2
 ```
 
 **Relevant snippet in `myrimatch.cfg`:**
@@ -122,7 +122,7 @@ In this section, we detail how to post-process PSMs and infer proteins using dif
 - **Download link** for the tool
 - **Input conversion** from search engine output to the tool-specific format
 - **Command** to run the tool
-- **FDR filtering** at PSM/peptide level (typically 1% FDR)
+- **FDR filtering** at PSM/peptide level (typically 1% FDR, `sipros_post_module.py` and `parseconfig.py` are needed.)
 - **Protein inference** step to assemble peptides into proteins and control protein-level FDR
 
 ---
@@ -208,7 +208,7 @@ https://figshare.com/articles/dataset/crux/29206184?file=55020527
 #### FDR Filtering (PSM/Peptide Level)
 
 ```bash
-python filtering_benchmark_shuffle.py -t output_directory/q-ranker.target.psms.txt -d filename.decoy.tsv -m qranker -o filename.filtered -f 0.01
+python filtering_benchmark_shuffle.py -t output_directory/q-ranker.target.psms.txt -d output_directory/q-ranker.decoy.psms.txt -m qranker -o filename.filtered -f 0.01
 ```
 - Generates: `filename.filtered.psm.txt`, `filename.filtered.pep.txt`
 
@@ -421,7 +421,7 @@ A CNN-based deep learning approach for PSM rescoring.
    ```
 2. Predict PSM scores:  
    ```bash
-   python Prediction_CNN.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+   python Prediction_CNN.py -i spectra.pkl -o rescore.out.txt -m cnn_pytorch.pt
    ```
 
 #### FDR Filtering (PSM/Peptide Level)
@@ -469,7 +469,7 @@ A transformer-inspired self-attention method for PSM rescoring.
    ```
 2. Predict PSM scores:  
    ```bash
-   python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+   python Prediction.py -i spectra.pkl -o rescore.out.txt -m marine_att.pt
    ```
 
 #### FDR Filtering (PSM/Peptide Level)
