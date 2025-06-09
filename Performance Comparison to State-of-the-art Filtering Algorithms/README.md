@@ -319,15 +319,16 @@ MS2Rescore enhances PSM confidence using additional features like retention time
   ```  
 - **MS-GF+**:  
   ```bash
-  python msgf2tsv.py -i filename.pep.xml -o filename.tsv
+  python msgf2tsv.py -i filename.mzid -o filename.tsv
   ```
 
 #### Running MS2Rescore
 
 ```bash
-ms2rescore -c config.json -p filename.tsv -n 20
+ms2rescore -c config.json -s filename.mzML -p filename.tsv -n 20
 ```
-- `-c`: path to `config.json` which specifies model parameters  
+- `-c`: path to `config.json` which specifies model parameters
+- `-s`: path to the mass spectrometry data in mzML format, the conversion configuration for MSConvertGUI is shown in [here](./tomzml.png)
 - `-p`: input PSM `.tsv`  
 - `-n`: number of CPU cores
 
@@ -365,7 +366,7 @@ DeepFilter applies a deep learning model to rescore PSMs.
   ```  
 - **MS-GF+**:  
   ```bash
-  python msgf2df.py -i filename.pepXML -o filename.pin
+  python msgf2df.py -i filename.mzid -o filename.pin
   ```
 
 #### Running DeepFilter

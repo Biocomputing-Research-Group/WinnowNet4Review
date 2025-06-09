@@ -49,7 +49,7 @@ If you find this repository helpful, please cite our paper:
 
 ## License
 
-[MIT License.]
+> MIT License.
 
 ## Contact
 
