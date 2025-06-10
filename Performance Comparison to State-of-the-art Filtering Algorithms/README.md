@@ -100,7 +100,7 @@ for name in *.ms2; do
     -inst 1 -t 0.09Da -ti -1,3 -ntt 2 -e 1 \
     -thread 16 -m 3 -minLength 7 -maxLength 60 -n 5 \
     -addFeatures 1 -maxMissedCleavages 3 -numMods 1 \
-    -decoy Rev -mod MSGFPlus_Mods1.txt \
+    -decoy Rev -tda 1 -mod MSGFPlus_Mods1.txt \
     -o "${name%.*}.mzid"
 done
 ```
@@ -325,10 +325,10 @@ MS2Rescore enhances PSM confidence using additional features like retention time
 #### Running MS2Rescore
 
 ```bash
-ms2rescore -c config.json -s filename.mzML -p filename.tsv -n 20
+ms2rescore -c config.json -s filename.mgf -p filename.tsv -n 20
 ```
 - `-c`: path to `config.json` which specifies model parameters
-- `-s`: path to the mass spectrometry data in mzML format, the conversion configuration for MSConvertGUI is shown in [here](./tomzml.png)
+- `-s`: path to the mass spectrometry data in mgf format, the conversion configuration for MSConvertGUI is shown in [here](./tomgf.png)
 - `-p`: input PSM `.tsv`  
 - `-n`: number of CPU cores
 
