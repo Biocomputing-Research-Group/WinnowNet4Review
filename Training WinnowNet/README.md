@@ -60,7 +60,7 @@ python WinnowNet_CNN.py -i spectra_feature_directory -m prosit_cnn.pt
 
 ```bash
 python SpectraFeatures_training.py -i filename.tsv -s filename.ms2 -o spectra_feature.pkl -t 20 -f cnn
-python WinnowNet_Att.py -i spectra_feature_directory -m cnn_pytorch.pt -p prosit_cnn.pt
+python WinnowNet_CNN.py -i spectra_feature_directory -m cnn_pytorch.pt -p prosit_cnn.pt
 ```
 
 **Pre-trained model:** cnn_pytorch.pt, https://figshare.com/articles/dataset/Models/25513531
