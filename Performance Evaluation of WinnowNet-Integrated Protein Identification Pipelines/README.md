@@ -1,6 +1,6 @@
 # Performance Evaluation of WinnowNet-Integrated Protein Identification Pipelines
 
-This folder contains the computational pipeline used for protein identification in our MS-based metaproteomics analysis, as described in our publication. The pipeline includes multiple tools (Sipros Ensemble, FragPipe, Peaks, and AlphaPept) and is organized to ensure reproducibility and compliance with the FAIR principles.
+This folder contains the computational pipeline used for protein identification in our MS-based metaproteomics analysis, as described in our publication. The pipeline includes four tools (Sipros Ensemble, FragPipe, Peaks, and AlphaPept) and is organized to ensure reproducibility and compliance with the FAIR principles.
 
 ## Overview
 
@@ -10,6 +10,10 @@ The pipeline supports protein identification through database searching, filteri
 - [FragPipe](#fragpipe)
 - [Peaks](#peaks)
 - [AlphaPept](#alphapept)
+- [Sipros Ensemble (with WinnowNet)](#sipros-ensemble-(with-winnownet))
+- [FragPipe (with WinnowNet)](#fragpipe-(with-winnownet))
+- [Peaks (with WinnowNet)](#peaks-(with-winnownet))
+- [AlphaPept (with WinnowNet)](#alphapept-(with-winnownet))
 
 ---
 
@@ -22,7 +26,23 @@ The pipeline supports protein identification through database searching, filteri
 
 ---
 
-## Tool-Specific Pipelines
+### Software Download Links
+
+- **Sipros Ensemble**  
+  https://
+
+- **FragPipe (version 21.0)** and **Philosopher**
+  https://github.com/Nesvilab/FragPipe/releases/download/21.0/FragPipe-21.0.zip
+
+- **Peaks (version 12.5)**  
+  https://
+  
+- **AlphaPept (version 0.5)**  
+  https://
+
+---
+
+## Original Pipelines
 
 ### Sipros Ensemble
 
@@ -84,3 +104,109 @@ alphapept workflow config.yaml
 - Screenshots referenced in this README must be placed in the same folder.
 - Please include any used scripts that are not publicly available or request them if needed.
 
+## WinnowNet-Integrated Pipelines
+
+The following alternative pipelines integrate WinnowNet for PSM filtering and scoring. They replace the original filtering steps with WinnowNet-based re-scoring and FDR control.
+
+### Sipros Ensemble (with WinnowNet)
+#### Database Searching
+```bash
+Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
+```
+
+#### Filtering with WinnowNet
+```bash
+# Step 1: Convert search results to TSV
+python SE2win.py -i filename.Spe2Pep.txt -o filename.tsv
+
+# Step 2: Re-score using WinnowNet
+python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f att
+python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+
+# Step 3: Apply FDR control at PSM/Peptide levels
+python filtering_shuffle.py -i rescore.out.txt -p filename.tsv -o filtered -f 0.01
+```
+
+#### Protein Assembly
+```bash
+python sipros_peptides_assembling.py
+```
+*Note: Adjust `-f` in the previous step to ensure protein-level FDR is 1% and rerun if necessary.*
+
+### FragPipe (with WinnowNet)
+#### Database Searching
+GUI-based setup (same as original): [FP_DB_search.png](./FP_DB_search.png)
+
+#### Filtering with WinnowNet
+```bash
+# Step 1: Convert to TSV
+python XML2win.py -i filename.pepXML -o filename.tsv
+
+# Step 2: Re-score
+python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f att
+python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+
+# Step 3: Convert to ProteinProphet input
+python win2prophet.py -i filename.pepXML -r rescore.out.txt -o filename.pep.xml
+```
+
+#### Protein Assembly
+```bash
+philosopher workspace --clean
+philosopher workspace --init
+philosopher proteinprophet --maxppmdiff 2000000 --minprob 0.5 --output combined filelist_proteinprophet.txt
+philosopher.exe database --annotate protein_db.fasta --prefix shuffle_
+philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --razor
+philosopher report
+```
+
+### Peaks (with WinnowNet)
+#### Database Searching
+GUI-based setup: [Peaks.png](./Peaks.png)
+
+#### Filtering with WinnowNet
+```bash
+# Step 1: Convert to TSV
+python XML2win.py -i filename.pepXML -o filename.tsv
+
+# Step 2: Re-score
+python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f att
+python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+
+# Step 3: Convert to ProteinProphet input
+python win2prophet.py -i filename.pepXML -r rescore.out.txt -o filename.pep.xml
+```
+
+#### Protein Assembly
+```bash
+philosopher workspace --clean
+philosopher workspace --init
+philosopher proteinprophet --maxppmdiff 2000000 --minprob 0.5 --output combined filelist_proteinprophet.txt
+philosopher.exe database --annotate protein_db.fasta --prefix shuffle_
+philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --razor
+philosopher report
+```
+
+### AlphaPept (with WinnowNet)
+#### Database Searching
+```bash
+alphapept workflow config.yaml
+```
+
+#### Filtering with WinnowNet
+```bash
+# Step 1: Convert AlphaPept result
+python alpha2win.py -i filename.csv -o filename.tsv
+
+# Step 2: Re-score
+python SpectraFeatures.py -i filename.tsv -s filename.ms2 -o spectra.pkl -t 48 -f att
+python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
+
+# Step 3: Apply WinnowNet filtering
+python alphapept_filtering.py -i filename.csv -r rescore.out.txt -o filename_output.csv
+```
+
+#### Protein Assembly
+```bash
+python AlphaPept_protein_assembly.py -i filename_output.csv -o filename_assembly_output.csv
+```
