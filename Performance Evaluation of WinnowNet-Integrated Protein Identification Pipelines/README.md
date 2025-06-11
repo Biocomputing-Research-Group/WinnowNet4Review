@@ -10,10 +10,10 @@ The pipeline supports protein identification through database searching, filteri
 - [FragPipe](#fragpipe)
 - [Peaks](#peaks)
 - [AlphaPept](#alphapept)
-- [Sipros Ensemble (with WinnowNet)](#sipros-ensemble-(with-winnownet))
-- [FragPipe (with WinnowNet)](#fragpipe-(with-winnownet))
-- [Peaks (with WinnowNet)](#peaks-(with-winnownet))
-- [AlphaPept (with WinnowNet)](#alphapept-(with-winnownet))
+- [Sipros Ensemble (with WinnowNet)](#sipros-ensemble-with-winnownet)
+- [FragPipe (with WinnowNet)](#fragpipe-with-winnownet)
+- [Peaks (with WinnowNet)](#peaks-with-winnownet)
+- [AlphaPept (with WinnowNet)](#alphapept-with-winnownet)
 
 ---
 
