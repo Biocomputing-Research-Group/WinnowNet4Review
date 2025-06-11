@@ -29,16 +29,16 @@ The pipeline supports protein identification through database searching, filteri
 ### Software Download Links
 
 - **Sipros Ensemble**  
-  https://
+  https://github.com/guo-xuan/Sipros-Ensemble/archive/refs/heads/master.zip
 
 - **FragPipe (version 21.0)** and **Philosopher**
   https://github.com/Nesvilab/FragPipe/releases/download/21.0/FragPipe-21.0.zip
 
 - **Peaks (version 12.5)**  
-  https://
+  https://www.bioinfor.com/peaks-studio-trial/ (Need to request a registration code for free trial)
   
 - **AlphaPept (version 0.5)**  
-  https://
+  https://github.com/MannLabs/alphapept/archive/refs/tags/v0.5.0.zip or install the package using the command `pip install alphapept.`
 
 ---
 
