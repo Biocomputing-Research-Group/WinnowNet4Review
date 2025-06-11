@@ -47,6 +47,7 @@ We used peptide-spectrum matches (PSMs) generated from three protein database se
 
 1. Place `comet.params` in the same directory as `comet.exe`.  
 2. Update the `database_name` field in `comet.params` to point to the appropriate FASTA file.
+3. Comet will include decoy search if using the provided configuration file.
 
 **Command:**
 ```
@@ -68,6 +69,7 @@ database_name = ./stool_nrnew_shuffled.fasta         # Human Gut
 
 1. Place `myrimatch.cfg` in your working directory.  
 2. Modify the `ProteinDatabase` field as needed.
+3. Myrimatch will include decoy search if using the provided configuration file.
 
 **Command:**
 ```
@@ -89,6 +91,7 @@ ProteinDatabase = ./stool_nrnew_shuffled.fasta         # Human Gut
 
 1. Place `MSGFPlus_Mods1.txt` and the corresponding `.fasta` database in the `workDir`.  
 2. Ensure Java 8 or newer is installed.
+3. MS-GF+ will include decoy search if using the provided parameter option `-tda 1`.
 
 **Command:**
 ```
@@ -148,6 +151,15 @@ https://github.com/percolator/percolator (Version 3.2)
 
 #### Running Percolator
 
+To combine search engine output files for Percolator, concatenate all .pin files while retaining only the first file's header line. Use the following command:
+
+```bash
+head -n 1 *.pin > filename.pin
+tail -n +2 *.pin | grep -v "^SpecId" >> filename.pin
+```
+
+Then run Percolator:
+
 ```bash
 percolator filename.pin -m filename.target.tsv -M filename.decoy.tsv
 ```
@@ -200,6 +212,15 @@ https://figshare.com/articles/dataset/crux/29206184?file=55020527
   ```
 
 #### Running Q-ranker
+
+To combine search engine output files for Q-ranker, concatenate all .txt files while retaining only the first file's header line. Use the following command:
+
+```bash
+head -n 1 *.txt > filename.txt
+tail -n +2 *.pin >> filename.txt
+```
+
+Then run Q-ranker:
 
 ```bash
 ./crux q-ranker --decoy-prefix Rev_ --output-dir output_directory filename.ms2 filename.txt
@@ -323,6 +344,15 @@ MS2Rescore enhances PSM confidence using additional features like retention time
   ```
 
 #### Running MS2Rescore
+
+To combine search engine output files for MS2Rescore, concatenate all .tsv files while retaining only the first file's header line. Use the following command:
+
+```bash
+head -n 1 *.tsv > filename.tsv
+tail -n +2 *.tsv >> filename.tsv
+```
+
+Then run Q-ranker:
 
 ```bash
 ms2rescore -c config.json -s filename.mgf -p filename.tsv -n 20
