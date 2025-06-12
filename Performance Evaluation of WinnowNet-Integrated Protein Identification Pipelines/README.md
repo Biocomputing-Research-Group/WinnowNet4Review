@@ -133,7 +133,7 @@ python filtering_shuffle.py -i rescore.out.txt -p filename.tsv -o filtered -f 0.
 ```bash
 python sipros_peptides_assembling.py
 ```
-*Note: Adjust `-f` in the previous step to ensure protein-level FDR is 1% and rerun if necessary.*
+*Note*: Adjust `-f` in the previous step to ensure protein-level FDR is 1% and rerun if necessary. `sipros_peptides_assembling.py` needs to be in the same folder with `filtered.pep.txt` and `filtered.psm.txt`.
 
 ---
 
