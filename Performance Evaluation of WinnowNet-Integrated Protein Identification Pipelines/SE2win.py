@@ -68,7 +68,7 @@ def parse_psm_file(path_to_file):
 
                 parts = line.split("\t")
 
-                identified = parts[1]
+                identified = parts[1].replace('[','.').replace(']','.')
                 proteins   = parts[7].strip()
                 proteins = proteins.strip()
                 if proteins.startswith("{") and proteins.endswith("}"):
