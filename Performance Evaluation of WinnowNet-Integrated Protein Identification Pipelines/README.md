@@ -108,6 +108,8 @@ alphapept workflow config.yaml
 
 The following alternative pipelines integrate WinnowNet for PSM filtering and scoring. They replace the original filtering steps with WinnowNet-based re-scoring and FDR control.
 
+*Note*: WinnowNet and its documentation can be accessed at https://github.com/Biocomputing-Research-Group/WinnowNet.
+
 ### Sipros Ensemble (with WinnowNet)
 #### Database Searching
 ```bash
