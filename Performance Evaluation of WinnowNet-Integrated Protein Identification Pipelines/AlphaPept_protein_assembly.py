@@ -201,7 +201,7 @@ def get_protein_groups(data: pd.DataFrame, pept_dict: dict, fasta_dict: dict, de
     return report
 
 
-def perform_protein_grouping(data: pd.DataFrame, pept_dict: dict, fasta_dict: dict, **kwargs) -> pd.DataFrame:
+def perform_protein_grouping(data: pd.DataFrame) -> pd.DataFrame:
     """
     Wrapper function to perform protein grouping by razor approach
 
@@ -213,32 +213,32 @@ def perform_protein_grouping(data: pd.DataFrame, pept_dict: dict, fasta_dict: di
     Returns:
         pd.DataFrame: alphapept results table now including protein level information.
     """
-    data_sub = data[['sequence', 'score', 'decoy']]
-    data_sub_unique = data_sub.groupby(['sequence', 'decoy'], as_index=False).agg({"score": "max"})
-
+    data_sub = data[['db_idx','sequence', 'score', 'decoy']]
+    data_sub = data[data['score']>0.99]
+    data_sub_unique = data_sub.groupby(['db_idx','sequence', 'decoy'], as_index=False).agg({"score": "max"})
     targets = data_sub_unique[data_sub_unique.decoy == False]
     targets = targets.reset_index(drop=True)
-    protein_targets = get_protein_groups(targets, pept_dict, fasta_dict, **kwargs)
+    #protein_targets = get_protein_groups(targets, pept_dict, fasta_dict, **kwargs)
 
-    protein_targets['decoy_protein'] = False
+    #protein_targets['decoy_protein'] = False
 
     decoys = data_sub_unique[data_sub_unique.decoy == True]
     decoys = decoys.reset_index(drop=True)
-    protein_decoys = get_protein_groups(decoys, pept_dict, fasta_dict, decoy=True, **kwargs)
+    #protein_decoys = get_protein_groups(decoys, pept_dict, fasta_dict, decoy=True, **kwargs)
 
-    protein_decoys['decoy_protein'] = True
+    #protein_decoys['decoy_protein'] = True
 
-    protein_groups = pd.concat([protein_targets, protein_decoys])
-    protein_groups_app = protein_groups[
-        ['sequence', 'decoy', 'protein', 'protein_group', 'razor', 'protein_idx', 'decoy_protein',
-         'n_possible_proteins']]
-    protein_report = pd.merge(data,
-                              protein_groups_app,
-                              how='inner',
-                              on=['sequence', 'decoy'],
-                              validate="many_to_one")
+    #protein_groups = pd.concat([protein_targets, protein_decoys])
+    #protein_groups_app = protein_groups[
+    #    ['sequence', 'decoy', 'protein', 'protein_group', 'razor', 'protein_idx', 'decoy_protein',
+    #     'n_possible_proteins']]
+    #protein_report = pd.merge(data,
+    #                          protein_groups_app,
+    #                          how='inner',
+    #                          on=['sequence', 'decoy'],
+    #                          validate="many_to_one")
 
-    return protein_report
+    return targets
 
 if __name__ == '__main__':
     argv=sys.argv[1:]
@@ -266,7 +266,7 @@ if __name__ == '__main__':
             output_file=arg
 
     df = pd.read_csv(input_file)
-    perform_protein_grouping(df)
+    df=perform_protein_grouping(df)
     df.to_csv(output_file)
 
     print('All done.')

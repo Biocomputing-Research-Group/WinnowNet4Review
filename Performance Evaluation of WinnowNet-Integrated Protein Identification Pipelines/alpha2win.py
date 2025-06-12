@@ -27,21 +27,26 @@ if __name__ == '__main__':
         elif opt in ("-o"):
             output_file=arg
     psm_list = []
-    prefix=input_file.split('.')[0][:-4]
+    prefix=input_file.split('.')[0]
     df=pd.read_csv(input_file)
     psm_list=[]
+    psm_dict={}
     for line_id, line in enumerate(df['sequence_naked']):
         scan=str(df['scan_no'][line_id])
         charge=str(int(df['charge'][line_id]))
-        rank='1'
-        psmid='_'.join([prefix, scan, charge, rank])
+        if scan+'_'+charge in psm_dict:
+            psm_dict[scan+'_'+charge]+=1
+        else:
+            psm_dict[scan+'_'+charge]=1
+        rank=str(psm_dict[scan+'_'+charge])
+        psmid='_'.join([prefix.replace('_ids',''), scan, charge, rank])
         peptide='-.'+line.replace('ox','~')+'.-'
         protein = str(df['db_idx'][line_id])
         psm_list.append([psmid, peptide, protein])
 
     with open(output_file,'w') as f:
         for line in psm_list:
-            f.write('\t'.join(line)+"\n")
+            f.write('\t'.join(line)+'\n')
 
 
     print('All done.')

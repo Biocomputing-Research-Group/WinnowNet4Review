@@ -111,6 +111,7 @@ The following alternative pipelines integrate WinnowNet for PSM filtering and sc
 *Note*: WinnowNet and its documentation can be accessed at https://github.com/Biocomputing-Research-Group/WinnowNet.
 
 ### Sipros Ensemble (with WinnowNet)
+
 #### Database Searching
 ```bash
 Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
@@ -135,7 +136,10 @@ python sipros_peptides_assembling.py
 ```
 *Note: Adjust `-f` in the previous step to ensure protein-level FDR is 1% and rerun if necessary.*
 
+---
+
 ### FragPipe (with WinnowNet)
+
 #### Database Searching
 GUI-based setup (same as original): [FP_DB_search.png](./FP_DB_search.png)
 
@@ -158,11 +162,16 @@ philosopher workspace --clean
 philosopher workspace --init
 philosopher proteinprophet --maxppmdiff 2000000 --minprob 0.5 --output combined filelist_proteinprophet.txt
 philosopher database --annotate protein_db.fasta --prefix shuffle_
-philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --protxml combined.prot.xml --razor
+philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml work_dir --protxml combined.prot.xml --razor
 philosopher report
 ```
 
+- `--pepxml work_dir` the folder contains `filename.pep.xml` from Step 3: Convert to ProteinProphet input `python win2prophet.py -i filename.pepXML -r rescore.out.txt -o filename.pep.xml`.
+
+---
+
 ### Peaks (with WinnowNet)
+
 #### Database Searching
 GUI-based setup: [Peaks.png](./Peaks.png)
 
@@ -185,11 +194,16 @@ philosopher workspace --clean
 philosopher workspace --init
 philosopher proteinprophet --maxppmdiff 2000000 --minprob 0.5 --output combined filelist_proteinprophet.txt
 philosopher database --annotate protein_db.fasta --prefix shuffle_
-philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --protxml combined.prot.xml --razor
+philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml work_dir --protxml combined.prot.xml --razor
 philosopher report
 ```
 
+- `--pepxml work_dir` the folder contains `filename.pep.xml` from Step 3: Convert to ProteinProphet input `python win2prophet.py -i filename.pepXML -r rescore.out.txt -o filename.pep.xml`.
+
+---
+
 ### AlphaPept (with WinnowNet)
+
 #### Database Searching
 ```bash
 alphapept workflow config.yaml

@@ -20,12 +20,14 @@ This folder contains scripts, datasets, and instructions for training two varian
 ### Phase 1: Training on Easy Tasks (Synthetic Data)
 
 ```bash
+mkdir -p checkpoints
 python SpectraFeatures_training.py -i filename.tsv -s filename.ms2 -o spectra_feature.pkl -t 20 -f att
 python WinnowNet_Att.py -i spectra_feature_directory -m prosit_att.pt
 ```
 
 **Explanation of options:**
-- `-i`: Input tab-delimited file with PSMs, including labels and weights.
+- 
+- `-i`: Input tab-delimited file with PSMs, including labels and weights.  All `tsv` and `pkl` files should be in the `spectra_feature_directory`.
 - `-s`: Corresponding MS2 file (filename should match TSV).
 - `-o`: Output file to store extracted features as a `pkl` file.
 - `-t`: Number of threads for parallel processing.
@@ -36,6 +38,7 @@ python WinnowNet_Att.py -i spectra_feature_directory -m prosit_att.pt
 ### Phase 2: Training on Difficult Tasks (Real Data)
 
 ```bash
+mkdir -p checkpoints
 python SpectraFeatures_training.py -i filename.tsv -s filename.ms2 -o spectra_feature.pkl -t 20 -f att
 python WinnowNet_Att.py -i spectra_feature_directory -m marine_att.pt -p prosit_att.pt
 ```
@@ -52,6 +55,7 @@ python WinnowNet_Att.py -i spectra_feature_directory -m marine_att.pt -p prosit_
 ### Phase 1: Training on Easy Tasks (Synthetic Data)
 
 ```bash
+mkdir -p checkpoints
 python SpectraFeatures_training.py -i filename.tsv -s filename.ms2 -o spectra_feature.pkl -t 20 -f cnn
 python WinnowNet_CNN.py -i spectra_feature_directory -m prosit_cnn.pt
 ```
@@ -59,6 +63,7 @@ python WinnowNet_CNN.py -i spectra_feature_directory -m prosit_cnn.pt
 ### Phase 2: Training on Difficult Tasks (Real Data)
 
 ```bash
+mkdir -p checkpoints
 python SpectraFeatures_training.py -i filename.tsv -s filename.ms2 -o spectra_feature.pkl -t 20 -f cnn
 python WinnowNet_CNN.py -i spectra_feature_directory -m cnn_pytorch.pt -p prosit_cnn.pt
 ```
