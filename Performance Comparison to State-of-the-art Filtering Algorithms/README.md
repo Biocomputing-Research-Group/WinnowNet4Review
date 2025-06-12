@@ -9,7 +9,7 @@ This directory provides all necessary commands, configuration files, and convers
 - **MS2Rescore**
 - **DeepFilter**
 
-We used peptide-spectrum matches (PSMs) generated from three protein database search engines: **Comet**, **Myrimatch**, and **MS-GF+**, applied across multiple metaproteomics datasets. More details about these datasets are in [Data/](./Data/)
+We used peptide-spectrum matches (PSMs) generated from three protein database search engines: **Comet**, **Myrimatch**, and **MS-GF+**, applied across multiple metaproteomics datasets. More details about these datasets are in [Data/](./Data/). All FDRs are controlled at 1% in these benchmarking experiments.
 
 ---
 
@@ -125,7 +125,7 @@ In this section, we detail how to post-process PSMs and infer proteins using dif
 - **Download link** for the tool
 - **Input conversion** from search engine output to the tool-specific format
 - **Command** to run the tool
-- **FDR filtering** at PSM/peptide level (typically 1% FDR, `sipros_post_module.py` and `parseconfig.py` are needed.)
+- **FDR filtering** at PSM/peptide level (1% FDR in these benchmark experiments, `sipros_post_module.py` and `parseconfig.py` are needed.)
 - **Protein inference** step to assemble peptides into proteins and control protein-level FDR
 
 ---
@@ -154,8 +154,7 @@ https://github.com/percolator/percolator (Version 3.2)
 To combine search engine output files for Percolator, concatenate all .pin files while retaining only the first file's header line. Use the following command:
 
 ```bash
-head -n 1 *.pin > filename.pin
-tail -n +2 *.pin | grep -v "^SpecId" >> filename.pin
+head -n 1 file1.pin > filename.pin && tail -n +2 -q *.pin >> filename.pin
 ```
 
 Then run Percolator:
@@ -216,8 +215,7 @@ https://figshare.com/articles/dataset/crux/29206184?file=55020527
 To combine search engine output files for Q-ranker, concatenate all .txt files while retaining only the first file's header line. Use the following command:
 
 ```bash
-head -n 1 *.txt > filename.txt
-tail -n +2 *.pin >> filename.txt
+head -n 1 file1.txt > filename.txt && tail -n +2 -q *.txt >> filename.txt
 ```
 
 Then run Q-ranker:
@@ -348,8 +346,7 @@ MS2Rescore enhances PSM confidence using additional features like retention time
 To combine search engine output files for MS2Rescore, concatenate all .tsv files while retaining only the first file's header line. Use the following command:
 
 ```bash
-head -n 1 *.tsv > filename.tsv
-tail -n +2 *.tsv >> filename.tsv
+head -n 1 file1.tsv > filename.tsv && tail -n +2 -q *.tsv >> filename.tsv
 ```
 
 Then run Q-ranker:

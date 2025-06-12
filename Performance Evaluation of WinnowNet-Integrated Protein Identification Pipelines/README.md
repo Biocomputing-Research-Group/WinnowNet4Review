@@ -53,7 +53,7 @@ Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
 ```
 
 - `Sipros_Openmp` is in `Sipros-Ensemble-master/ReleaseOpenMP` folder.
-- Raw MS data could be converted to `.ms2` by using MSConvert as in [Benchmark Dataset Descriptions](../Benchmark%20Dataset%20Descriptions/)
+- Raw MS data could be converted to `.ms2` by using MSConvert as in [Benchmark Dataset Descriptions](../Benchmark%20Dataset%20Descriptions/).
 - Protein database could be updated in `SiprosConfig.cfg`. Reverse proteins could be added by executing this command `sipros_prepare_protein_database.py -i ./protein_database.fasta -o protein_database_rev.fasta -c ./SiprosConfig.cfg`
 
 #### Filtering and Protein Assembly
