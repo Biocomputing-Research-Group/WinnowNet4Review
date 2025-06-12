@@ -7,7 +7,7 @@ WinnowNet is a deep-learning-based PSM filtering algorithm for metaproteomics th
 ## Repository Structure
 
 ```
-WinnowNet-Reproduction/
+WinnowNet4Review/
 │
 ├── Training WinnowNet/
 │   └── Scripts and configuration files to train both the self-attention-based and CNN-based WinnowNet models.

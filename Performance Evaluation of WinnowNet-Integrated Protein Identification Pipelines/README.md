@@ -157,8 +157,8 @@ python win2prophet.py -i filename.pepXML -r rescore.out.txt -o filename.pep.xml
 philosopher workspace --clean
 philosopher workspace --init
 philosopher proteinprophet --maxppmdiff 2000000 --minprob 0.5 --output combined filelist_proteinprophet.txt
-philosopher.exe database --annotate protein_db.fasta --prefix shuffle_
-philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --razor
+philosopher database --annotate protein_db.fasta --prefix shuffle_
+philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --protxml combined.prot.xml --razor
 philosopher report
 ```
 
@@ -184,8 +184,8 @@ python win2prophet.py -i filename.pepXML -r rescore.out.txt -o filename.pep.xml
 philosopher workspace --clean
 philosopher workspace --init
 philosopher proteinprophet --maxppmdiff 2000000 --minprob 0.5 --output combined filelist_proteinprophet.txt
-philosopher.exe database --annotate protein_db.fasta --prefix shuffle_
-philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --razor
+philosopher database --annotate protein_db.fasta --prefix shuffle_
+philosopher filter --picked --prot 0.01 --minPepLen 7 --tag shuffle_ --pepxml combined.prot.xml --protxml combined.prot.xml --razor
 philosopher report
 ```
 

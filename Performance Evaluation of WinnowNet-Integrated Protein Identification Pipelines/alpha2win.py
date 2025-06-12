@@ -27,12 +27,12 @@ if __name__ == '__main__':
         elif opt in ("-o"):
             output_file=arg
     psm_list = []
-    prefix=input_file.split('.')[0]
+    prefix=input_file.split('.')[0][:-4]
     df=pd.read_csv(input_file)
     psm_list=[]
     for line_id, line in enumerate(df['sequence_naked']):
         scan=str(df['scan_no'][line_id])
-        charge=str(df['charge'][line_id])
+        charge=str(int(df['charge'][line_id]))
         rank='1'
         psmid='_'.join([prefix, scan, charge, rank])
         peptide='-.'+line.replace('ox','~')+'.-'
@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     with open(output_file,'w') as f:
         for line in psm_list:
-            f.write('\t'.join(line))
+            f.write('\t'.join(line)+"\n")
 
 
     print('All done.')
