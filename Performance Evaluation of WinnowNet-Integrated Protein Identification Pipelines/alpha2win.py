@@ -31,12 +31,12 @@ if __name__ == '__main__':
     df=pd.read_csv(input_file)
     psm_list=[]
     for line_id, line in enumerate(df['sequence_naked']):
-        scan=df['scan_no'][line_id]
-        charge=df['charge'][line_id]
+        scan=str(df['scan_no'][line_id])
+        charge=str(df['charge'][line_id])
         rank='1'
         psmid='_'.join([prefix, scan, charge, rank])
-        peptide='-.'+line.replace('ox''~')+'.-'
-        protein = df['db_idx'][line_id]
+        peptide='-.'+line.replace('ox','~')+'.-'
+        protein = str(df['db_idx'][line_id])
         psm_list.append([psmid, peptide, protein])
 
     with open(output_file,'w') as f:

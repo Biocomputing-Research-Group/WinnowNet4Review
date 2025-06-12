@@ -15,6 +15,7 @@ The pipeline supports protein identification through database searching, filteri
 - [Peaks (with WinnowNet)](#peaks-with-winnownet)
 - [AlphaPept (with WinnowNet)](#alphapept-with-winnownet)
 
+*Note*: All FDRs are controlled at 1% in these benchmarking experiments.
 ---
 
 ## FAIR Principles
@@ -50,6 +51,10 @@ The pipeline supports protein identification through database searching, filteri
 ```bash
 Sipros_Openmp -f filename.ms2 -c work_Dir/SiprosConfig.cfg -o work_Dir
 ```
+
+- `Sipros_Openmp` is in `Sipros-Ensemble-master/ReleaseOpenMP` folder.
+- Raw MS data could be converted to `.ms2` by using MSConvert as in [Benchmark Dataset Descriptions](../Benchmark%20Dataset%20Descriptions/)
+- Protein database could be updated in `SiprosConfig.cfg`. Reverse proteins could be added by executing this command `sipros_prepare_protein_database.py -i ./protein_database.fasta -o protein_database_rev.fasta -c ./SiprosConfig.cfg`
 
 #### Filtering and Protein Assembly
 ```bash
@@ -98,11 +103,6 @@ alphapept workflow config.yaml
 - Configuration file: [config.yaml](./config.yaml) (user must provide or customize)
 
 ---
-
-## Additional Notes
-
-- Screenshots referenced in this README must be placed in the same folder.
-- Please include any used scripts that are not publicly available or request them if needed.
 
 ## WinnowNet-Integrated Pipelines
 
@@ -205,6 +205,8 @@ python Prediction.py -i spectra.pkl -o rescore.out.txt -m att_pytorch.pt
 # Step 3: Apply WinnowNet filtering
 python alphapept_filtering.py -i filename.csv -r rescore.out.txt -o filename_output.csv
 ```
+
+- `filename.csv` is the PSM result file ended by `_ids.csv`.
 
 #### Protein Assembly
 ```bash
