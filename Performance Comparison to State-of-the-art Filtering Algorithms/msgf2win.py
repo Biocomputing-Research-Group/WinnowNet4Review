@@ -39,7 +39,7 @@ class scan:
         results = []
         for pepid, pep in enumerate(self.pep_list):
             l=[common_prefix+'_'+str(pepid+1)]
-            l.append(pep.prev_aa+'.'+pep.identified_pep.replace('~','[15.9949]')+'.'+pep.next_aa)
+            l.append(pep.identified_pep.replace('+16','~'))
             l.append(','.join(pep.protein_list))
             results.append(l)
 
