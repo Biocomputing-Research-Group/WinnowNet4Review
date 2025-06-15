@@ -143,7 +143,7 @@ def show_Fdr(psm_list, fdr_float, charge_left_given=-1, charge_right_given=-1):
     decoy = 0
     target = 0
     best_nums = [0, 0]
-
+    
     psm_filtered_list = []
     cutoff_probability = 1000.0
     # without considering training label
@@ -623,23 +623,18 @@ def readWinnowNetData(singlefile,rescore):
         scan = str(int(string[-3]))
         charge = str(int(string[-2]))
         rank = str(int(string[-1]))
-
+        if rank!='1':
+            continue
         IdentifyPeptide = s[1]
         PTM_score = IdentifyPeptide.count('~')
 
         Proteinname = s[2]
-        ProteinCount = 0
+        Proteins = s[2].split(',')
+        ProteinCount = len(Proteins)
 
-        Proteins = []
-        for pidx in range(2, length):
-            if s[pidx]!='':
-                Proteins.append(s[pidx])
-                if pidx == 2:
-                    continue
-                Proteinname += ',' + s[pidx]
         PSM_Label = False
         for protein in Proteins:
-            if 'Rev_' not in protein:
+            if not protein.startswith(entrapment_prefix):
                 ProteinCount += 1
                 PSM_Label = True
                 break
@@ -648,7 +643,8 @@ def readWinnowNetData(singlefile,rescore):
             if not protein.startswith(decoy_prefix):
                 Decoy_Label = True
                 break
-        PSMs.append(PSM(filename, file_id, int(scan), int(charge),int(rank), 0.0, 0.0,0.0,float(rescores[line_id]), PTM_score, IdentifyPeptide, PSM_Label, Proteins,Proteinname,ProteinCount))
+        if Decoy_Label:
+            PSMs.append(PSM(filename, file_id, int(scan), int(charge),int(rank), 0.0, 0.0,0.0,float(rescores[line_id]), PTM_score, IdentifyPeptide, PSM_Label, Proteins,Proteinname,ProteinCount))
     return PSMs
 
 
@@ -1036,11 +1032,8 @@ if __name__ == "__main__":
             fdr=float(arg)
 
     PSMs = readWinnowNetData(PSM_file,input_file)
-    print(len(PSMs))
     psm_list = sorted(PSMs, key=lambda psm: (psm.rescore, psm.Massdiff, psm.PTM_score), reverse=True)
     rank_list = re_rank(PSMs)
-
-    print(len(rank_list))
     filter_list = show_Fdr(rank_list, fdr)
     print('psm:' + str(len(filter_list)))
     

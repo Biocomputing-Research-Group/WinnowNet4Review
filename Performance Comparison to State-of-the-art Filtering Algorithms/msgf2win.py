@@ -72,25 +72,11 @@ def read_one_pep_xml_msgf(input_file_str, psm_list,fidx):
     AnalysisData=DataCollection.find('{http://psidev.info/psi/pi/mzIdentML/1.1}AnalysisData')
     SpectrumIdentificationList=AnalysisData.find('{http://psidev.info/psi/pi/mzIdentML/1.1}SpectrumIdentificationList')
     for SpectrumIdentificationResult in SpectrumIdentificationList.iter('{http://psidev.info/psi/pi/mzIdentML/1.1}SpectrumIdentificationResult'):
-        scan_charge=set()
-        first=True
         one_scan=scan()
-        one_scan.fidx = fidx
         for cvParam in SpectrumIdentificationResult.iter('{http://psidev.info/psi/pi/mzIdentML/1.1}cvParam'):
             one_scan.scan_number=cvParam.attrib['value']
+            one_scan.fidx=fidx
         for SpectrumIdentificationItem in SpectrumIdentificationResult.iter('{http://psidev.info/psi/pi/mzIdentML/1.1}SpectrumIdentificationItem'):
-            if cvParam.attrib['value']+'_'+SpectrumIdentificationItem.attrib['chargeState'] in scan_charge:
-                scan_charge.add(cvParam.attrib['value']+'_'+SpectrumIdentificationItem.attrib['chargeState'])
-            else:
-                if first:
-                    first=False
-                    scan_charge.add(cvParam.attrib['value'] + '_' + SpectrumIdentificationItem.attrib['chargeState'])
-                else:
-                    psm_list.append(one_scan)
-                    one_scan = scan()
-                    one_scan.fidx = fidx
-                    one_scan.scan_number = cvParam.attrib['value']
-                    one_scan.charge=SpectrumIdentificationItem.attrib['chargeState']
             pep=peptide()
             pep.charge=SpectrumIdentificationItem.attrib['chargeState']
             one_scan.charge=SpectrumIdentificationItem.attrib['chargeState']
