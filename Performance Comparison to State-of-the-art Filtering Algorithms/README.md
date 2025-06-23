@@ -100,9 +100,9 @@ for name in *.ms2; do
   java -Xmx250000M -jar /path/to/MSGFPlus.jar \
     -s "$name" \
     -d "./DATABASE.fasta" \
-    -inst 1 -t 0.1Da -ti -1,3 -ntt 2 -e 1 \
+    -inst 1 -t 0.09Da -ti -1,3 -ntt 2 -e 1 \
     -thread 16 -m 3 -minLength 7 -maxLength 60 -n 5 \
-    -addFeatures 1 -maxMissedCleavages 5 -numMods 1 \
+    -addFeatures 1 -maxMissedCleavages 3 -numMods 1 \
     -decoy Rev -tda 1 -mod MSGFPlus_Mods1.txt \
     -o "${name%.*}.mzid"
 done
